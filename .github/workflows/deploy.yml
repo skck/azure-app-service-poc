@@ -1,0 +1,20 @@
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    name: Build and Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@main
+      - uses: "shivammathur/setup-php@v2"
+        with:
+          php-version: "8.2"
+      - uses: "ramsey/composer-install@v2"
+        with:
+          composer-options: "--no-dev --no-interaction --no-progress --no-suggest --optimize-autoloader --classmap-authoritative"
+      - name: Test
+        run: |
+          php bin/console --env=prod
